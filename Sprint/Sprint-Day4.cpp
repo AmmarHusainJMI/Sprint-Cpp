@@ -1,0 +1,169 @@
+#include<iostream>
+#include<string>
+using namespace std ; 
+
+class Analyzer
+{
+    private : string category; int no_of_expenses ; double indi_amount = 0 ; double food =0 , travel=0 , shopping =0 , others = 0 ; bool token = false ;
+    double total=0 , average = 0; string spendingstatus ;string collector[100] ; int counter = 0 ;
+    public  : 
+    void input () ;
+    void expenseflag(double); 
+    void foodfxn(double) ;
+    void travelfxn(double);
+    void shoppingfxn(double);
+    void othersfxn(double);
+    void calculate();
+    void spending_status(); 
+    void maximum(); 
+    void print(); 
+}; 
+
+void Analyzer :: input() 
+{
+    cout<<"Enter the number of expenses : " ; 
+    cin>>no_of_expenses ; 
+
+    for (int i = 0 ; i<no_of_expenses ; i++)
+    {
+        cout<<"Enter the amount of Expense "<<i+1 << " : "; 
+        cin>>indi_amount ;
+        expenseflag(indi_amount);
+
+        cout <<"Enter the category of Expense (Food , Travel , Shopping , Others)  "<<i+1<<" : ";
+        cin>>category ;
+        cout<<endl ; 
+
+        if(category=="Food")
+        {
+            foodfxn(indi_amount);
+        }
+        else if(category=="Travel")
+        {
+            travelfxn(indi_amount);
+        }
+        else if(category=="Shopping")
+        {
+            shoppingfxn(indi_amount);
+        }
+        else if(category=="Others") 
+        {
+            othersfxn(indi_amount);
+        }
+    }
+
+
+
+}
+
+void Analyzer :: expenseflag(double a)
+{
+    if (a>500)
+    {
+        token = true ; 
+    }
+
+}
+
+void Analyzer :: foodfxn(double a) 
+{
+    food = food + a ; 
+}
+
+void Analyzer :: travelfxn(double a) 
+{
+    travel = travel+ a ; 
+}
+
+void Analyzer :: shoppingfxn(double a) 
+{
+    shopping = shopping + a ; 
+}
+
+void Analyzer :: othersfxn(double a) 
+{
+    others = others + a ; 
+}
+
+void Analyzer :: calculate()
+{
+    total = food + travel + shopping + others ; 
+    average = (total)/no_of_expenses ; 
+    spending_status(); 
+}
+void Analyzer :: spending_status()
+{
+    if (average<=200)
+    spendingstatus = "Controlled Spending" ; 
+    else if (average<=400 && average >200)
+    spendingstatus = "Moderate Spending" ; 
+    else
+    spendingstatus = "High Spending" ; 
+    print();
+}
+
+void Analyzer :: maximum()
+{
+    if(food >= travel && food >= shopping && food >= others )
+    {
+        collector[counter] = " Food " ; 
+        counter++ ; 
+    }
+    if(travel >= food && travel >= shopping && travel >= others )
+    {
+        collector[counter] = " Travel" ; 
+        counter++ ; 
+    }
+    if(shopping >= travel && shopping >= food && shopping >= others )
+    {
+        collector[counter] = " Shopping " ; 
+        counter++ ; 
+    }
+    if(others >= travel && others >= shopping && others >= food )
+    {
+        collector[counter] = " Others " ; 
+        counter++ ; 
+    }
+    
+    for ( int j = 0 ; j<counter ; j++)
+    {
+        cout<<collector[j] ;
+        if (counter-j>1)
+        {
+            cout<< " , " ; 
+        }
+        
+    }
+}
+
+void Analyzer :: print() 
+{
+    if (token)
+    {
+        cout<<"High Expense Detected"<<endl ; 
+        cout<<endl ; 
+    }
+
+    cout<<"Total Expense  :  "<<total <<endl; 
+    cout<<"Average Expense  :  "<<average <<endl; 
+    cout<<endl;
+    cout<<"Categroy-Wise Expenses :"<<endl;
+    cout << "FOOD      :  "<<food<<endl;
+    cout << "Travel    :  "<<travel<<endl;
+    cout << "Shopping  :  "<<shopping<<endl;
+    cout << "Others    :  "<<others<<endl;
+    cout<<endl ; 
+    cout<<"Highest Spending Category : " ; 
+    maximum();
+    cout<<endl; 
+    cout<<"Spending Status : "<<spendingstatus; 
+
+}
+
+int main()
+{
+    Analyzer test ; 
+    test.input(); 
+    test.calculate(); 
+    return 0 ;
+}
