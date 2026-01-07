@@ -1,0 +1,327 @@
+#include <iostream>
+#include <string>
+#include <chrono>
+#include <random>
+#include <fstream>
+using namespace std;
+
+
+class Clinic
+{
+private: string name, allergy, age , bp , sys ,dis , auditstatus , auditID;
+int age1 = 0 , bp1 =0 , sys1 = 0 , dis1 = 0 ; 
+bool print , agecheck , agecheck_numeral , bpcheck , syscheck , discheck , sysdischeck , allergycheck , safetybp , safetysys , safetydis ; 
+bool flag , warning; 
+long long container ; 
+public:
+    Clinic();
+    void ValidationAge();
+    void Validation();
+    void ValidationAllergy(); 
+    void safety(); 
+    void AuditStatus() ; 
+    void AuditID(); 
+    void LogFile(); 
+    void Print(); 
+    void Flag(); 
+    void Warnings(); 
+    
+
+
+};
+
+Clinic ::Clinic()
+{
+    cout << "<<:::::::::::::::::: CLINICAL DATA AUDIT SYSTEM :::::::::::::::::::>>" << endl
+         << endl;
+
+    cout << "Enter Patient's Name    :   ";
+    getline(cin, name);
+    cout << "Enter Patient's Age     :   ";
+    getline(cin, age);
+    ValidationAge(); 
+    cout << "Enter Heart Rate (bpm)  :   ";
+    getline(cin, bp);
+    cout << "Enter Systolic BP       :   ";
+    getline(cin, sys);
+    cout << "Enter Diastolic BP      :   ";
+    getline(cin, dis);
+    Validation(); 
+    cout << "Any Known Allergies(Yes/No)  :  ";
+    getline(cin, allergy);
+    ValidationAllergy();
+    safety(); 
+    AuditStatus();
+    AuditID();
+    LogFile();
+    Print(); 
+
+}
+
+void Clinic :: ValidationAge()
+{
+    for ( int i = 0 ; i < age.length() ; i++)
+    {
+        if (!isdigit(age[i]))
+        {
+            print = false ; 
+            agecheck = false ; 
+            flag = false ; 
+        }
+    }
+
+    if (agecheck)
+    {
+        age1 = stoi(age) ; 
+        if ( !(0<=age1<=120))
+        {
+            print = false ; 
+            agecheck_numeral = false ; 
+            flag = false ; 
+        }
+
+    }
+}
+
+void Clinic :: Validation ()
+{
+    for ( int i = 0 ; i < bp.length() ; i++)
+    {
+        if (!isdigit(bp[i])) 
+        {
+            print = false ; 
+            bpcheck = false ;        
+            flag = false ;    
+        }
+    }
+
+    for ( int i = 0 ; i < sys.length() ; i++)
+    {
+        if (!isdigit(sys[i])) 
+        {
+            print = false ; 
+            syscheck = false ; 
+            flag = false ;           
+        }
+    }
+
+    for ( int i = 0 ; i < dis.length() ; i++)
+    {
+        if (!isdigit(dis[i])) 
+        {
+            print = false ; 
+            discheck = false ;   
+            flag = false ;         
+        }
+    }
+
+    if(bpcheck)
+    bp1 = stoi(bp) ;  
+
+    if(syscheck)
+    sys1 = stoi(sys) ;  
+
+    if(discheck)
+    dis1 = stoi(dis) ; 
+    
+    if ( syscheck && discheck )
+    {
+        if (dis1>sys1)
+        {
+            print = false ; 
+            sysdischeck = false ; 
+            flag = false ; 
+        }
+    }
+
+}
+
+void Clinic :: ValidationAllergy()
+{
+    if ( !( allergy == "Yes"|| allergy == "No"))
+    {
+        print = false ; 
+        allergycheck = false ; 
+        flag = false ; 
+    }
+}
+
+void Clinic :: safety()
+{   
+    if ( !(40<=bp1<=180) )
+    {
+        safetybp = false ; 
+        warning = false ; 
+    }
+
+    if ( !(40<=sys1<=180) )
+    {
+        safetysys = false ; 
+        warning = false ; 
+    }
+
+    if ( !(40<=dis1<=180) )
+    {
+        safetydis = false ; 
+        warning = false ; 
+    }
+
+}
+
+void Clinic :: Flag() 
+{
+    if(!agecheck)
+    {
+        cout<<" Age Must Be A Number Between 0 to 120" <<endl ;
+    }
+    if(!agecheck_numeral)
+    {
+        cout<<" Age Must Be A Number Between 0 to 120" <<endl ;
+    }
+    if(!bpcheck)
+    {
+        cout<<" BP Must Be A Number" <<endl ;
+    }
+    if(!syscheck)
+    {
+        cout<<" Systolic BP Must Be A Number" <<endl ;
+    }
+    if(!discheck)
+    {
+        cout<<" Distolic BP Must Be A Number" <<endl ;
+    }
+    if(!sysdischeck)
+    {
+        cout<<" Systolic BP Must Be More Than Distolic BP" <<endl ;
+    }
+    if(!allergycheck)
+    {
+        cout<<"In Allergy Asked Please Only Type Yes Or No "<<endl; 
+    }
+    if (flag)
+    {
+        cout<<"None"<<endl ; 
+    }
+}
+
+void Clinic :: Warnings()
+{
+    if(!bpcheck)
+    {
+        cout<<"Heart Rate Outside Typical Safe Range "<<endl ;
+    }
+
+    if(!syscheck)
+    {
+        cout<<"Systolic BP Outside Typical Safe Range "<<endl ;
+    }
+
+    if(!discheck)
+    {
+        cout<<"Distolic BP Outside Typical Safe Range "<<endl ;
+    }
+
+    if(warning)
+    {
+        cout<<"None"<<endl;
+    }
+}
+
+void Clinic :: AuditStatus()
+{
+    if (!flag)
+    {
+        auditstatus = "FAIL" ; 
+    }
+    else if (!warning)
+    {
+        auditstatus = "REVIEW";
+    }
+    else 
+    {
+        auditstatus = "FAIL" ; 
+    }
+}
+
+void Clinic :: AuditID()
+{
+    auto now = chrono::system_clock::now();
+    auto timestamp = chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+
+    mt19937 rng(timestamp);
+    uniform_int_distribution<int> dist(1000, 9999);
+    int randomPart = dist(rng);
+    auditID = "AUD-" + to_string(timestamp) +
+                      "-" + to_string(randomPart);
+    container = timestamp ; 
+ 
+    
+}
+
+void Clinic :: LogFile()
+{
+    ofstream logFile; 
+    logFile.open("audit_log.txt", ios::app);
+    logFile <<"+++++++++++++++++++++++++++++++++++++++++++++++++"<<endl<<endl
+            << "AuditID    :  "<< auditID <<endl
+            << "Timestamp  :  "<<container<<endl
+            << "Name       :  "<<name<<endl  
+            << "Status     :  "<<auditstatus<<endl<<endl
+            << "Flags      :  "<<endl; Flag() ; 
+    cout<<endl<< "Warnings   :  "<<endl;; Warnings() ;
+    cout<<endl<< "Note       :  Non-Diagnostic Clinical Data Audit"<<endl
+            <<"+++++++++++++++++++++++++++++++++++++++++++++++++"<<endl<<endl ; 
+    logFile<<endl ; 
+    logFile.close(); 
+}
+
+void Clinic :: Print()
+{
+    if ( print )
+    {
+        cout<<"<<:::::::::::::::::::::::::::::::::::::::::::::::>>"<<endl;
+        cout<<"               CLINICAL AUDIT REPORT               "<<endl; 
+        cout<<"<<:::::::::::::::::::::::::::::::::::::::::::::::>>"<<endl; 
+        cout<<endl ; 
+        cout<<"Audit ID        :     "<<auditID <<endl;
+        cout<<"Time Stamp      :     "<<container <<endl;
+        cout<<"Patient Name    :     "<<name <<endl;
+        cout<<"Audit Status    :     "<<auditstatus <<endl;
+
+        cout<<"-------------------Audit Flags---------------------"<<endl ;
+        Flag(); 
+        cout<<"---------------------------------------------------"<<endl ;
+        cout<<endl ; 
+        cout<<"---------------------Warnings----------------------"<<endl ;
+        Warnings(); 
+        cout<<"---------------------------------------------------"<<endl ;
+        cout<<endl; 
+        cout<<"Audit Record Saved For Traceability"<<endl;
+        cout<<"This System Performs Data Audit Only"<<endl;
+        cout<<"No Diagnosis or Medical Advice Provided"<<endl<<endl;
+        cout<<"---------------------------------------------------"<<endl ;
+        cout<<endl; 
+    }
+    else 
+    {
+        cout<<"<<:::::::::::::::::::::::::::::::::::::::::::::::>>"<<endl;
+        cout<<"               CLINICAL AUDIT REPORT               "<<endl; 
+        cout<<"<<:::::::::::::::::::::::::::::::::::::::::::::::>>"<<endl; 
+        cout<<endl ; 
+        cout<<"Audit Status    :     "<<auditstatus <<endl;
+
+        cout<<"-------------------Audit Flags---------------------"<<endl ;
+        Flag(); 
+        cout<<"---------------------------------------------------"<<endl ;
+        cout<<endl ; 
+        cout<<"---------------------Warnings----------------------"<<endl ;
+        Warnings(); 
+        cout<<"---------------------------------------------------"<<endl ;
+    }
+}
+
+int main()
+{
+    Clinic patient ; 
+    return 0 ; 
+}
