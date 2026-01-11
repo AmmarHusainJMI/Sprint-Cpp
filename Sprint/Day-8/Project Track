@@ -1,0 +1,618 @@
+#include <iostream>
+#include <map>
+#include <string>
+#include <fstream>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+struct credentials
+{
+    string password;
+    string account_number;
+    double money = 0;
+    int account_type = 0;
+};
+
+class Bank
+{
+private:
+    int choice = 0;
+    map<string, credentials> noble;
+    credentials user;
+    map<string, credentials>::iterator iter;
+    string username, password;
+public:
+    double given = 0;
+    double taken = 0;
+    double minimum = 1000;
+    int account = 0;
+    int fail = 0;
+    bool success_failure = true;
+    void entry();
+    void choosing();
+    void registerr();
+    void login();
+    void bank();
+    void choosing2();
+    void history();
+    void deposit();
+    void withdraw();
+    void balance();
+    void load();
+    void save();
+    void accountNumber();
+    void logTransaction(string type, double amount, unsigned int txnID);
+};
+
+void Bank ::entry()
+{
+    cout << endl
+         << endl;
+    cout << "_________________________________________________________________________" << endl
+         << "       From the vaults of trust and balance , a noble soul approaches    " << endl
+         << "        Where gold is counted not by greed, but by honour and record     " << endl
+         << "_________________________________________________________________________" << endl
+         << "                   + ENTER THE HALLS OF FINANCE +                        " << endl
+         << "_________________________________________________________________________" << endl
+         << "                  Two paths lie before thee, Noble                       " << endl
+         << "              One forged by memory, the other by destiny                 " << endl
+         << endl
+
+         << "(1) Return to thy treasure, " << endl
+         << "                       Earned with Hardship and Protected With Sanctity " << endl
+         << "(2) Inscribe thy name upon the ledgers of this realm, " << endl
+         << "                       Let thy journey begin from nothing  " << endl
+         << endl
+
+         << " The Weight Of Time Rests Upopn Thy Back , " << endl
+         << " Chooseth Wisely, For The Scrolls Remember All :(1/2) ";
+    cin >> choice;
+    if (cin.fail())
+    {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        system("cls");
+        cout << "The vault trembles at thy careless inscription." << endl;
+        cout << "Numbers alone may open these doors." << endl;
+        cout << "Return , and choose with clarity." << endl;
+        entry();
+    }
+    else
+    {
+        cin.ignore();
+        choosing();
+    }
+}
+
+void Bank ::choosing()
+{
+    switch (choice)
+    {
+    case 1:
+        login();
+        break;
+
+    case 2:
+        registerr();
+        break;
+
+    default:
+        system("cls");
+
+        cout << "The vault trembles at thy careless inscription." << endl;
+        cout << "Correct Scrolls alone may open these doors." << endl;
+        cout << "Return , and choose with clarity." << endl;
+        entry();
+        break;
+    }
+}
+
+void Bank::accountNumber()
+{
+    noble[username].account_number = "ACC" + to_string(rand() % 900000 + 100000);
+}
+
+void Bank ::login()
+{
+    system("cls");
+    cout << "_________________________________________________________________________" << endl
+         << "    Step Forth Noble ,                                                   " << endl
+         << "                 Speak the name by which the ledgers shall know thee     " << endl
+         << "_________________________________________________________________________" << endl
+         << endl
+
+         << " Enter Thy Chosen Name : ";
+    getline(cin, username);
+    for (char &c : username)
+    {
+        c = tolower(static_cast<unsigned char>(c));
+    }
+    cout << endl;
+    cout << "_________________________________________________________________________" << endl;
+    cout << "    The Vault Listens In Silence                                         " << endl
+         << "                  Whisper now the cipher that guards thy fortune         " << endl;
+    cout << "_________________________________________________________________________" << endl
+         << endl;
+
+    cout << " Enter Thy Sacred Cipher : ";
+    getline(cin, password);
+    iter = noble.find(username);
+    if (iter != noble.end())
+    {
+        if (iter->second.password == password)
+        {
+            account = iter->second.account_type;
+            system("cls");
+            cout << "_________________________________________________________________________" << endl
+                 << "         The vault doors tremble . . .                                   " << endl
+                 << "                                    Gears turn. Locks yield . . .        " << endl
+                 << "_________________________________________________________________________" << endl
+                 << endl
+                 << "           Welcome back, Noble. Thy treasury stands untouched            " << endl;
+            fail = 0;
+            bank();
+        }
+
+        else
+        {
+            system("cls");
+            cout << "_________________________________________________________________________" << endl
+                 << "     The cipher falters . . .                                            " << endl
+                 << "                          Thy claim to the vault is denied . . .         " << endl
+                 << "_________________________________________________________________________" << endl
+                 << endl
+                 << "           Giving You More Chances .. Don't Waste Them Noble             " << endl
+                 << endl;
+            login();
+        }
+    }
+    else
+    {
+        system("cls");
+        cout << "_________________________________________________________________________" << endl
+             << "     The ledgers rustle… then fall silent                                " << endl
+             << "                          No such name is etched within the vaults       " << endl
+             << "_________________________________________________________________________" << endl
+             << endl
+             << "           Giving You More Chances .. Don't Waste Them Noble             " << endl
+             << endl;
+        login();
+    }
+}
+
+void Bank ::registerr()
+{
+    system("cls");
+    cout << "_________________________________________________________________________" << endl
+         << "            The ledgers of this realm lie blank before thee              " << endl
+         << "        Choose the name by which thy wealth shall be remembered          " << endl
+         << "_________________________________________________________________________" << endl
+         << endl
+
+         << " Inscribe Thy Chosen Name : ";
+    getline(cin, username);
+    for (char &c : username)
+    {
+        c = tolower(static_cast<unsigned char>(c));
+    }
+    cout << endl;
+    iter = noble.find(username);
+
+    if (iter != noble.end())
+    {
+        system("cls");
+        cout << "_________________________________________________________________________" << endl
+             << "                 The scribes halt their quills                           " << endl
+             << "         This name is already etched within the ledgers                  " << endl
+             << "_________________________________________________________________________" << endl
+             << endl
+             << "           Giving You More Chances .. Don't Waste Them Noble             " << endl
+             << endl;
+        registerr();
+        return;
+    }
+
+    cout << endl;
+    cout << "_________________________________________________________________________" << endl;
+    cout << "                       Every vault demands a key                         " << endl
+         << "           Forge now the cipher that shall guard thy treasure            " << endl;
+    cout << "_________________________________________________________________________" << endl;
+
+    cout << " Inscribe Thy Sacred Cipher : ";
+    getline(cin, user.password);
+
+    noble[username] = user;
+    accountNumber();
+    cout << endl;
+    cout << "_________________________________________________________________________" << endl;
+    cout << "              Two forms of covenant stand before thee, Noble             " << endl
+         << "         One of restraint and preservation, the other of free flow       " << endl;
+    cout << "_________________________________________________________________________" << endl
+         << endl;
+
+    cout << "(1) Savings Account   - Bound by balance, guarded by covenant" << endl;
+    cout << "(2) Current Account   - Forged for motion, unbound by restraint" << endl
+         << endl;
+    cout << " Declare thy choice (1 / 2) : ";
+    cin >> account;
+    cin.ignore();
+
+    if (cin.fail())
+    {
+        noble.erase(username);
+        cin.clear();
+        cin.ignore(1000, '\n');
+        system("cls");
+        cout << "The vault trembles at thy careless inscription." << endl;
+        cout << "Numbers alone may open these doors." << endl;
+        cout << "Return , and choose with clarity." << endl;
+        entry();
+    }
+    else if (account > 2 || account < 1)
+    {
+        system("cls");
+        cout << "The vault trembles at thy careless inscription." << endl;
+        cout << "Correct Scrolls alone may open these doors." << endl;
+        cout << "Return , and choose with clarity." << endl;
+        entry();
+    }
+
+    else
+    {
+        system("cls");
+        cout << "_________________________________________________________________________" << endl
+             << "          Thy name has been etched into the records of this hall         " << endl
+             << "                      Guard thy cipher well, Noble                       " << endl
+             << "_________________________________________________________________________" << endl;
+
+        noble[username].account_type = account;
+
+        iter = noble.find(username);
+        save();
+        bank();
+    }
+}
+
+void Bank ::bank()
+{
+    if (account == 1)
+    {
+        cout << endl;
+        cout << "Note : As Your Account Is A Saving Account " << endl
+             << "The vault guards demand a sacred minimum of Rs1000." << endl;
+    }
+
+    if (account == 2)
+    {
+        cout << endl;
+        cout << "Note : As Your Account Is A Current Account " << endl
+             << "This account is forged for motion, not restraint. " << endl
+             << "The vault places no minimum upon thy balance. " << endl;
+    }
+
+    if ((*iter).second.money == 0)
+    {
+        cout << endl;
+        cout << "The vault stands empty (Rs = 0). Continued emptinees may lead to account restraint." << endl;
+        cout << endl;
+    }
+
+    cout << endl;
+    cout << "_________________________________________________________________________" << endl
+         << "   Coins do not move without will                                        " << endl
+         << "                                 Choose Your command carefully, Noble    " << endl
+         << "_________________________________________________________________________" << endl
+         << "     The great halls of the Treasury awaken to receive thee, Noble       " << endl
+         << endl
+
+         << "(1) Deposit " << endl
+         << "(2) Withdraw " << endl
+         << "(3) Check Balance " << endl
+         << "(4) View Transaction History  " << endl
+         << "(5) Logout  " << endl
+         << endl;
+    cout << " The Weight Of Time Rests Upopn Thy Back , " << endl
+         << " Chooseth Wisely, For The Scrolls Remember All :(1/2/3/4/5) ";
+    cin >> choice;
+    cin.ignore();
+
+    if (cin.fail())
+    {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        system("cls");
+        cout << "The vault trembles at thy careless inscription." << endl;
+        cout << "Numbers alone may open these doors." << endl;
+        cout << "Return , and choose with clarity." << endl;
+        bank();
+    }
+    else
+    {
+        choosing2();
+    }
+}
+
+void Bank ::choosing2()
+{
+    switch (choice)
+    {
+    case 1:
+        system("cls");
+        deposit();
+        break;
+
+    case 2:
+        system("cls");
+        withdraw();
+        break;
+
+    case 3:
+        system("cls");
+        balance();
+        break;
+
+    case 4:
+        system("cls");
+        history();
+        break;
+
+    case 5:
+        system("cls");
+        cout << "Gold rests again in stillness as thou departest the halls" << endl;
+        save();
+        exit(0);
+
+    default:
+        system("cls");
+
+        cout << "The vault trembles at thy careless inscription." << endl;
+        cout << "Correct Scrolls alone may open these doors." << endl;
+        cout << "Return , and choose with clarity." << endl;
+        bank();
+
+        break;
+    }
+}
+
+void Bank ::deposit()
+{
+    cout << "State the sum thou wishest to entrust to the vault :";
+    cin >> given;
+
+    if (cin.fail())
+    {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        system("cls");
+        cout << "The vault trembles at thy careless inscription." << endl;
+        cout << "Numbers alone may open these doors." << endl;
+        cout << "Return , and choose with clarity." << endl;
+        success_failure = false;
+        unsigned int txnID = rand() % 900000 + 100000;
+        logTransaction("DEPOSIT", 0, txnID);
+        bank();
+    }
+    else
+    {
+        if (!(given > 0))
+        {
+            cout << "An empty or negative tribute cannot be accepted by the vault. " << endl;
+            cout << endl;
+            success_failure = false;
+            unsigned int txnID = rand() % 900000 + 100000;
+            logTransaction("DEPOSIT", 0, txnID);
+            bank();
+            return;
+        }
+        cin.ignore();
+        (*iter).second.money = (*iter).second.money + given;
+        cout << "The vault accepts thy offering. The transaction is complete." << endl;
+        unsigned int txnID = rand() % 900000 + 100000; // generate once
+        cout << "Transaction ID : TXN" << txnID << endl;
+        logTransaction("DEPOSIT", given, txnID);
+        cout << "Balance Resting Within the Vault : " << (*iter).second.money << endl;
+        cout << endl;
+        success_failure = true;
+
+        save();
+        bank();
+    }
+}
+
+void Bank ::withdraw()
+{
+    cout << "Declare the sum thou seekest to withdraw from the vault : ";
+    cin >> taken;
+    if (cin.fail())
+    {
+        success_failure = false;
+
+        cin.clear();
+        cin.ignore(1000, '\n');
+        system("cls");
+        cout << "The vault trembles at thy careless inscription." << endl;
+        cout << "Numbers alone may open these doors." << endl;
+        cout << "Return , and choose with clarity." << endl;
+        fail++;
+        if (fail > 3)
+        {
+            cout << endl;
+            cout << "Repeated failed attempts have drawn the vault’s attention. A warning is issued." << endl;
+            cout << endl;
+        }
+        success_failure = false;
+        unsigned int txnID = rand() % 900000 + 100000;
+        logTransaction("WITHDRAW", 0, txnID);
+
+        bank();
+    }
+    else
+    {
+        if (taken < 0)
+        {
+            cout << "Withdrawal Amount Can Never Be Negative || Error - Returning back" << endl;
+            success_failure = false;
+            unsigned int txnID = rand() % 900000 + 100000;
+            logTransaction("WITHDRAW", 0, txnID);
+
+            bank();
+            return;
+        }
+        cin.ignore();
+        if (account == 1 && (*iter).second.money - taken < minimum)
+        {
+            cout << "The vault demands at least Rs.1000 remain within." << endl;
+            cout << "Thy withdrawal cannot proceed." << endl;
+            cout << endl;
+            cout << "Balance Resting Within the Vault : " << (*iter).second.money << endl;
+            cout << endl;
+            fail++;
+            if (fail > 3)
+            {
+                cout << endl;
+                cout << "Repeated failed attempts have drawn the vault's attention. A warning is issued." << endl;
+                cout << endl;
+            }
+
+            success_failure = false;
+            unsigned int txnID = rand() % 900000 + 100000;
+            logTransaction("WITHDRAW", taken, txnID);
+
+            bank();
+
+            return;
+        }
+        if ((*iter).second.money >= taken)
+        {
+            (*iter).second.money = (*iter).second.money - taken;
+            if (taken > 50000)
+            {
+                cout << endl
+                     << "The ledgers mark this movement of gold for review. Proceed with caution. Withdrawal Amount More than Rs 50000" << endl
+                     << endl;
+            }
+            cout << "The vault releases the requested sum. The transaction stands complete." << endl;
+            success_failure = true;
+            unsigned int txnID = rand() % 900000 + 100000;
+            cout << "Transaction ID : TXN" << txnID << endl;
+            logTransaction("WITHDRAW", taken, txnID);
+            fail = 0;
+        }
+        else
+        {
+            cout << "The ledgers find thy claim greater than what rests within the vault." << endl;
+            fail++;
+            success_failure = false;
+            unsigned int txnID = rand() % 900000 + 100000;
+            logTransaction("WITHDRAW", taken, txnID);
+            if (fail > 3)
+            {
+                cout << endl;
+                cout << "Repeated failed attempts have drawn the vault’s attention. A warning is issued." << endl;
+                cout << endl;
+            }
+        }
+        cout << "Balance Resting Within the Vault : " << (*iter).second.money << endl;
+        cout << endl;
+        save();
+        bank();
+    }
+}
+
+void Bank ::balance()
+{
+    cout << "Balance Resting Within the Vault : " << (*iter).second.money << endl;
+    cout << endl;
+    bank();
+}
+
+void Bank::save()
+{
+    ofstream file("users.txt");
+
+    if (!file)
+    {
+        cout << "Vault records could not be opened for writing." << endl;
+        return;
+    }
+
+    for (auto &entry : noble)
+    {
+        file << entry.first << " "
+             << entry.second.password << " "
+             << entry.second.account_number << " "
+             << entry.second.account_type << " "
+             << entry.second.money << endl;
+    }
+
+    file.close();
+}
+
+void Bank::load()
+{
+    ifstream file("users.txt");
+
+    if (!file)
+    {
+
+        return;
+    }
+
+    credentials temp;
+    string name;
+
+    while (file >> name >> temp.password >> temp.account_number >> temp.account_type >> temp.money)
+    {
+        noble[name] = temp;
+    }
+
+    file.close();
+}
+
+void Bank::logTransaction(string type, double amount, unsigned int txnID)
+{
+    ofstream file("transactions.txt", ios::app);
+    file << "TXN" << txnID << " "
+         << username << " "
+         << type << " "
+         << amount << " "
+         << (success_failure ? "SUCCESS" : "FAILED") << endl;
+    file.close();
+}
+
+void Bank::history()
+{
+    ifstream file("transactions.txt");
+    string txn, user, type, status;
+    double amount;
+
+    cout << endl;
+    cout << "---------------- TRANSACTION HISTORY ----------------" << endl;
+
+    while (file >> txn >> user >> type >> amount >> status)
+    {
+        if (user == username)
+        {
+            cout << txn << "  "
+                 << type << "  "
+                 << amount << "  "
+                 << status << endl;
+        }
+    }
+    file.close();
+    cout << endl;
+    bank();
+}
+
+int main()
+{
+    srand(time(0));
+
+    Bank User;
+    User.load();
+    User.entry();
+
+    return 0;
+}
