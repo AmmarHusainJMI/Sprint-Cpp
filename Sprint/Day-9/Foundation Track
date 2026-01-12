@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector> 
+using namespace std ; 
+
+
+struct Student
+{
+    string name ;
+    string roll ;
+    double marks ;
+}; 
+class school
+{
+    
+    protected : string n , r ; double m ; 
+    public : 
+    school(); 
+    void display_info();
+    void check_result();
+    vector<Student> ok ; 
+    vector<Student> :: iterator iter ; 
+} ; 
+
+
+school :: school()
+{
+    Student s ; 
+    cout<<"Enter Student's Name : " ; 
+    getline(cin ,s.name ) ;  
+    cout<<"Enter Student's Roll Number : " ; 
+    getline(cin ,s.roll ) ;  
+    cout<<"Enter Student's Marks : " ; 
+    cin>>s.marks; 
+    cin.ignore();  
+    ok.push_back(s) ; 
+}
+
+
+void school :: display_info()
+{
+    cout<<" ----- ----- STUDENT PROFILE  ----- ----"<<endl;
+    for (auto iter = ok.begin(); iter != ok.end(); ++iter)
+    {
+        cout << "Name  : " << iter->name << endl;
+        cout << "Roll  : " << iter->roll << endl;
+        cout << "Marks : " << iter->marks << endl<<endl;
+    }
+}
+
+void school::check_result()
+{
+    for (const auto& s : ok)
+    {
+        if (s.marks >= 40)
+            cout << "Result : PASS"<<endl;
+        else
+            cout << "Result : FAIL"<<endl;
+    }
+}
+
+int main()
+{
+    school obj ; 
+    obj.display_info();
+    obj.check_result();
+    return 0; 
+}
