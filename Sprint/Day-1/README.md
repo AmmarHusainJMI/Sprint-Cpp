@@ -6,7 +6,7 @@
 
 ## 🎥 Project Demo
 
-![Jamia Darshan CLI Demo](assets/jamia_darshan_demo.gif)
+![Jamia Darshan Intro](assets/jamia_darshan.png)
 
  *A glimpse into Jamia Darshan — where commands turn into conversations, and history speaks back.*
 
