@@ -10,7 +10,6 @@
 
  *A glimpse into Jamia Darshan — where commands turn into conversations, and history speaks back.*
 
-*(Replace the path with your actual GIF file location)*
 
 
 ## 📌 Project Overview
