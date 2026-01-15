@@ -4,7 +4,7 @@
  Not the buildings of stone, but the Jamia that stands for *nothing but love* for its students —  
  a love that still carries the warmth and vision of its founders.
 
-## 🎥 Project Demo
+## 🎥 Project Intro
 
 ![Jamia Darshan Intro](assets/jamia_darshan.png)
 
